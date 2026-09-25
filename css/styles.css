@@ -1,0 +1,371 @@
+/* =========================================================
+   ESTILOS
+   Cambia los colores y fuentes en :root.
+   Los colores de cada año están en js/config.js
+   ========================================================= */
+
+:root {
+  --bg: #F3F6F7;
+  --surface: #FFFFFF;
+  --ink: #1A2530;
+  --muted: #5E6B75;
+  --rule: #D6DEE3;
+  --focus: #2D5F8B;
+  --mark: #FFE39A;
+
+  --font-ui: "Public Sans", "Segoe UI", system-ui, -apple-system, Roboto, Arial, sans-serif;
+  --font-read: "Source Serif 4", "Georgia", "Cambria", "Times New Roman", serif;
+
+  --page-width: 62rem;
+  --read-width: 70ch;
+  --radius: 10px;
+}
+
+*,
+*::before,
+*::after { box-sizing: border-box; }
+
+html { scroll-padding-top: 7rem; }
+@media (max-width: 640px) { html { scroll-padding-top: 11rem; } }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-ui);
+  font-size: 1rem;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+button { font: inherit; }
+
+:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+.visually-hidden {
+  position: absolute !important;
+  width: 1px; height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.skip-link {
+  position: absolute;
+  left: 1rem; top: -3rem;
+  background: var(--ink); color: #fff;
+  padding: .5rem .75rem; border-radius: 6px;
+  z-index: 20;
+}
+.skip-link:focus { top: 1rem; }
+
+mark {
+  background: var(--mark);
+  color: inherit;
+  border-radius: 2px;
+  padding: 0 .08em;
+}
+
+/* ---------- Barra superior ---------- */
+
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: var(--surface);
+  border-bottom: 1px solid var(--rule);
+}
+
+.topbar__inner {
+  max-width: var(--page-width);
+  margin: 0 auto;
+  padding: 1rem 1.25rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: .75rem 2rem;
+}
+
+.brand { flex: 1 1 18rem; min-width: 0; }
+
+.brand__title {
+  margin: 0;
+  font-size: 1.35rem;
+  font-weight: 700;
+  letter-spacing: -.01em;
+  line-height: 1.2;
+}
+
+.brand__subtitle {
+  margin: .15rem 0 0;
+  color: var(--muted);
+  font-size: .875rem;
+}
+
+.search {
+  flex: 1 1 22rem;
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.search__icon {
+  position: absolute;
+  left: .85rem;
+  width: 1.1rem; height: 1.1rem;
+  fill: none; stroke: var(--muted); stroke-width: 2; stroke-linecap: round;
+  pointer-events: none;
+}
+
+.search__input {
+  width: 100%;
+  font: inherit;
+  font-size: 1rem;
+  color: var(--ink);
+  background: var(--bg);
+  border: 1px solid var(--rule);
+  border-radius: 999px;
+  padding: .7rem 5rem .7rem 2.6rem;
+  appearance: none;
+}
+.search__input::-webkit-search-cancel-button { display: none; }
+.search__input:focus { background: var(--surface); border-color: var(--focus); outline: none; box-shadow: 0 0 0 3px color-mix(in srgb, var(--focus) 25%, transparent); }
+
+.search__clear {
+  position: absolute;
+  right: .45rem;
+  border: 0;
+  background: transparent;
+  color: var(--focus);
+  font-size: .875rem;
+  font-weight: 600;
+  padding: .35rem .7rem;
+  border-radius: 999px;
+  cursor: pointer;
+}
+.search__clear:hover { background: var(--bg); }
+
+/* ---------- Página ---------- */
+
+.page {
+  max-width: var(--page-width);
+  margin: 0 auto;
+  padding: 1.25rem 1.25rem 4rem;
+}
+
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: .5rem 1rem;
+  margin-bottom: 1rem;
+}
+
+.toolbar__status { margin: 0; color: var(--muted); font-size: .9375rem; }
+.toolbar__actions { display: flex; gap: .25rem; }
+
+.text-button {
+  border: 0;
+  background: transparent;
+  color: var(--focus);
+  font-size: .875rem;
+  font-weight: 600;
+  padding: .3rem .6rem;
+  border-radius: 6px;
+  cursor: pointer;
+}
+.text-button:hover { background: color-mix(in srgb, var(--focus) 10%, transparent); }
+
+/* ---------- Chevron compartido ---------- */
+
+.chevron {
+  width: 1.1rem; height: 1.1rem;
+  flex: none;
+  fill: none; stroke: var(--muted); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;
+  transition: transform .18s ease;
+}
+details[open] > summary .chevron { transform: rotate(90deg); }
+
+summary { cursor: pointer; list-style: none; }
+summary::-webkit-details-marker { display: none; }
+
+/* ---------- Año ---------- */
+
+.year {
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  border-left: 6px solid var(--year-color);
+  border-radius: var(--radius);
+  margin-bottom: .9rem;
+  overflow: hidden;
+}
+
+.year__summary {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: .85rem 1.25rem .85rem 1rem;
+}
+.year__summary:hover { background: color-mix(in srgb, var(--year-color) 5%, var(--surface)); }
+
+.year__numeral {
+  font-size: 2.75rem;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--year-color);
+  min-width: 2.2rem;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+
+.year__label { font-size: 1.2rem; font-weight: 700; }
+.year__count { margin-left: auto; color: var(--muted); font-size: .9rem; white-space: nowrap; }
+
+.year__courses {
+  border-top: 1px solid var(--rule);
+}
+
+/* ---------- Curso ---------- */
+
+.course + .course { border-top: 1px solid var(--rule); }
+
+.course__summary {
+  display: grid;
+  grid-template-columns: 6.5rem 1fr auto auto;
+  align-items: baseline;
+  gap: .25rem 1rem;
+  padding: .8rem 1.25rem .8rem 1.5rem;
+}
+.course__summary:hover { background: var(--bg); }
+.course__summary .chevron { align-self: center; }
+
+.course__number {
+  font-weight: 700;
+  color: var(--year-color);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.course__name { font-weight: 500; }
+.course__count { color: var(--muted); font-size: .85rem; white-space: nowrap; }
+
+.course[open] > .course__summary { background: color-mix(in srgb, var(--year-color) 6%, var(--surface)); }
+
+.course__body {
+  padding: .5rem 1.25rem 1.5rem calc(1.5rem + 6.5rem + 1rem);
+}
+
+/* ---------- Outcomes (texto de lectura) ---------- */
+
+.outcomes {
+  max-width: var(--read-width);
+  font-family: var(--font-read);
+  font-size: 1.0625rem;
+  line-height: 1.65;
+}
+
+.outcomes__para { margin: 0 0 .75rem; }
+.outcomes__para--lead { color: var(--muted); font-style: italic; }
+
+.outcomes__heading {
+  font-family: var(--font-ui);
+  font-size: .95rem;
+  font-weight: 700;
+  color: var(--year-color);
+  margin: 1.25rem 0 .4rem;
+}
+.outcomes__heading:first-child { margin-top: .25rem; }
+
+.outcomes__list {
+  list-style: none;
+  margin: 0 0 .75rem;
+  padding: 0;
+}
+
+.outcomes__list li {
+  display: grid;
+  grid-template-columns: 2rem 1fr;
+  gap: .25rem;
+  padding: .4rem 0;
+}
+.outcomes__list li + li { border-top: 1px dashed var(--rule); }
+
+/* viñeta para listas sin número */
+.outcomes__list:not(.outcomes__list--ordered) li::before {
+  content: "";
+  width: .45rem; height: .45rem;
+  margin-top: .62em;
+  border-radius: 50%;
+  background: var(--year-color);
+  justify-self: start;
+}
+
+.outcomes__num {
+  font-family: var(--font-ui);
+  font-weight: 700;
+  font-size: .875rem;
+  color: var(--year-color);
+  padding-top: .2em;
+  font-variant-numeric: tabular-nums;
+}
+
+.outcomes__empty { color: var(--muted); font-style: italic; margin: 0; }
+
+.course__note {
+  max-width: var(--read-width);
+  margin-top: 1rem;
+  padding: .7rem .9rem;
+  background: var(--bg);
+  border-radius: 8px;
+  font-size: .875rem;
+  color: var(--muted);
+}
+.course__note strong { color: var(--ink); }
+
+/* ---------- Móvil ---------- */
+
+@media (max-width: 640px) {
+  .topbar__inner { padding: .85rem 1rem; }
+  .brand__title { font-size: 1.15rem; }
+  .page { padding: 1rem .75rem 3rem; }
+
+  .year__numeral { font-size: 2.1rem; min-width: 1.6rem; }
+  .year__label { font-size: 1.05rem; }
+
+  .course__summary {
+    grid-template-columns: 1fr auto;
+    padding: .75rem 1rem;
+  }
+  .course__number { grid-column: 1; }
+  .course__name { grid-column: 1; }
+  .course__count { grid-column: 1; }
+  .course__summary .chevron { grid-column: 2; grid-row: 1 / span 3; }
+
+  .course__body { padding: .25rem 1rem 1.25rem; }
+  .outcomes { font-size: 1rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .chevron { transition: none; }
+}
+
+@media print {
+  .topbar, .toolbar__actions, .chevron { display: none; }
+  .year, .course { break-inside: avoid-page; }
+}
+
+/* ---------- Error al cargar el Excel ---------- */
+
+.load-error {
+  background: #FDECEC;
+  border: 1px solid #F2B8B8;
+  color: #8A1C1C;
+  border-radius: var(--radius);
+  padding: 1rem 1.25rem;
+  margin: 0;
+}
