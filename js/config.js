@@ -1,6 +1,6 @@
 /*
- * CONFIGURACIÓN — todos los textos de la página y los colores por año.
- * Cambia aquí los títulos, etiquetas o colores sin tocar el resto del código.
+ * CONFIGURACIÓN — textos de la página y colores por año.
+ * Cambia aquí títulos, etiquetas o colores sin tocar el resto del código.
  */
 window.CONFIG = {
   // Nombre EXACTO del Excel subido al repositorio (en la misma carpeta que index.html)
@@ -23,18 +23,22 @@ window.CONFIG = {
   },
   defaultYearColor: "#5E6B75",
 
+  // Años seleccionados al abrir la página: [] = ninguno, ["1"] = Year 1, "all" = todos
+  initialYears: "all",
+
   text: {
-    searchPlaceholder: "Search courses and outcomes",
+    allYears: "All years",
     courses: (n) => (n === 1 ? "1 course" : `${n} courses`),
+    matches: (n) => (n === 1 ? "1 match" : `${n} matches`),
     outcomes: (n) => (n === 1 ? "1 outcome" : `${n} outcomes`),
     noOutcomes: "No learning outcomes listed for this course.",
     notesLabel: "Note",
+    pickHint: "Select one or more years above to see their courses. Click a course to read its learning outcomes.",
+    selected: (n) => `Showing ${n === 1 ? "1 course" : `${n} courses`}. Click a course to read its learning outcomes.`,
     resultsFor: (n, q) =>
       n === 0
         ? `No courses match “${q}”. Try a shorter word or check the spelling.`
-        : `${n === 1 ? "1 course matches" : `${n} courses match`} “${q}”`,
-    idle: (n) => `${n} courses. Open a year to see its courses, or search above.`,
-    loading: "Loading courses…",
+        : `${n === 1 ? "1 course matches" : `${n} courses match`} “${q}” in all years.`,
   },
 
   // Tiempo de espera (ms) antes de buscar mientras se escribe
