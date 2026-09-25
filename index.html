@@ -15,25 +15,34 @@
   <header class="topbar">
     <div class="topbar__inner">
       <div class="brand">
-        <h1 class="brand__title" id="site-title"></h1>
-        <p class="brand__subtitle" id="site-subtitle"></p>
+        <!-- El título está escrito aquí para que la página nunca se vea vacía.
+             Si lo cambias, cámbialo también en js/config.js -->
+        <h1 class="brand__title" id="site-title">DVM Course Learning Outcomes</h1>
+        <p class="brand__subtitle" id="site-subtitle">UCalgary Veterinary Medicine, syllabi 2026–27</p>
       </div>
 
       <div class="search" role="search">
         <label class="visually-hidden" for="search-input">Search courses and outcomes</label>
         <svg class="search__icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>
-        <input id="search-input" class="search__input" type="search" autocomplete="off" spellcheck="false">
+        <input id="search-input" class="search__input" type="search" autocomplete="off" spellcheck="false" placeholder="Search courses and outcomes">
         <button id="search-clear" class="search__clear" type="button" hidden>Clear</button>
       </div>
     </div>
   </header>
 
   <main class="page" id="catalog">
+    <section class="picker" aria-labelledby="picker-title">
+      <h2 class="picker__title" id="picker-title">Choose a year</h2>
+      <div id="year-picker" class="picker__grid" role="group" aria-labelledby="picker-title">
+        <p class="picker__loading">Loading courses…</p>
+      </div>
+    </section>
+
     <div class="toolbar">
       <p id="search-status" class="toolbar__status" aria-live="polite"></p>
-      <div class="toolbar__actions">
-        <button id="expand-all" class="text-button" type="button">Expand all</button>
-        <button id="collapse-all" class="text-button" type="button">Collapse all</button>
+      <div class="toolbar__actions" id="toolbar-actions" hidden>
+        <button id="expand-all" class="text-button" type="button">Open all outcomes</button>
+        <button id="collapse-all" class="text-button" type="button">Close all outcomes</button>
       </div>
     </div>
 
@@ -43,12 +52,34 @@
   <!-- Librería para leer Excel (SheetJS) -->
   <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 
-  <!-- Orden de carga: configuración → datos → utilidades → vistas → búsqueda → arranque -->
+  <!-- Archivos de la página. Orden: configuración → datos → formato → vistas → búsqueda → arranque -->
   <script src="js/config.js"></script>
   <script src="js/data.js"></script>
   <script src="js/format.js"></script>
   <script src="js/render.js"></script>
   <script src="js/search.js"></script>
   <script src="js/app.js"></script>
+
+  <!-- Revisión: si algún archivo no cargó, lo dice en pantalla en vez de quedar en blanco -->
+  <script>
+    (function () {
+      var checks = [
+        ["js/config.js", window.CONFIG],
+        ["js/data.js", window.Data],
+        ["js/format.js", window.Format],
+        ["js/render.js", window.Render],
+        ["js/search.js", window.Search],
+        ["js/app.js", window.AppStarted],
+        ["SheetJS (librería de Excel, desde internet)", window.XLSX]
+      ];
+      var missing = checks.filter(function (c) { return !c[1]; }).map(function (c) { return c[0]; });
+      if (missing.length) {
+        document.getElementById("year-picker").innerHTML =
+          '<p class="load-error"><strong>The page could not start.</strong> These files did not load: ' +
+          missing.join(", ") +
+          '.<br>Check in GitHub that each file exists with that exact name and folder (lowercase), and that its content was pasted completely.</p>';
+      }
+    })();
+  </script>
 </body>
 </html>
