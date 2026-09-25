@@ -40,6 +40,8 @@ body {
 
 button { font: inherit; }
 
+[hidden] { display: none !important; }
+
 :focus-visible {
   outline: 3px solid var(--focus);
   outline-offset: 2px;
@@ -191,44 +193,120 @@ mark {
 }
 details[open] > summary .chevron { transform: rotate(90deg); }
 
+
 summary { cursor: pointer; list-style: none; }
 summary::-webkit-details-marker { display: none; }
 
-/* ---------- Año ---------- */
+/* ---------- Selector de años (tarjetas) ---------- */
+
+.picker { margin-bottom: 1.5rem; }
+
+.picker__title {
+  margin: 0 0 .75rem;
+  font-size: 1.05rem;
+  font-weight: 700;
+}
+
+.picker__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(10.5rem, 1fr));
+  gap: .75rem;
+}
+
+.picker__loading { margin: 0; color: var(--muted); }
+
+.year-card {
+  --year-color: var(--ink);
+  position: relative;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  grid-template-rows: auto auto;
+  column-gap: .8rem;
+  align-items: center;
+  text-align: left;
+  padding: .9rem 2.4rem .9rem 1rem;
+  background: var(--surface);
+  color: var(--ink);
+  border: 1px solid var(--rule);
+  border-top: 5px solid var(--year-color);
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: background-color .15s ease, border-color .15s ease;
+}
+.year-card:hover:not(:disabled) { border-color: var(--year-color); }
+
+.year-card__numeral {
+  grid-row: 1 / span 2;
+  font-size: 2.4rem;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--year-color);
+  font-variant-numeric: tabular-nums;
+}
+.year-card--all .year-card__numeral { font-size: 1.35rem; }
+.year-card__label { white-space: nowrap; }
+
+.year-card__label { font-weight: 700; font-size: 1.05rem; }
+.year-card__count { color: var(--muted); font-size: .875rem; }
+
+/* marca de "seleccionado" */
+.year-card__check {
+  position: absolute;
+  top: .6rem; right: .6rem;
+  width: 1.3rem; height: 1.3rem;
+  border: 2px solid var(--rule);
+  border-radius: 50%;
+  background: var(--surface);
+}
+
+.year-card.is-selected {
+  background: var(--year-color);
+  border-color: var(--year-color);
+  color: #fff;
+}
+.year-card.is-selected .year-card__numeral,
+.year-card.is-selected .year-card__count { color: #fff; }
+.year-card.is-selected .year-card__check {
+  border-color: #fff;
+  background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%231A2530' stroke-width='3.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12.5l4.5 4.5L19 7.5'/%3E%3C/svg%3E") center / 75% no-repeat;
+}
+
+/* mientras se busca, las tarjetas solo muestran cuántos resultados hay en cada año */
+.year-card:disabled { cursor: default; opacity: .85; }
+.year-card:disabled .year-card__check { display: none; }
+
+/* ---------- Año (lista de cursos) ---------- */
 
 .year {
   background: var(--surface);
   border: 1px solid var(--rule);
   border-left: 6px solid var(--year-color);
   border-radius: var(--radius);
-  margin-bottom: .9rem;
+  margin-bottom: 1rem;
   overflow: hidden;
 }
 
-.year__summary {
+.year__heading {
   display: flex;
   align-items: center;
-  gap: 1rem;
-  padding: .85rem 1.25rem .85rem 1rem;
+  gap: .9rem;
+  margin: 0;
+  padding: .8rem 1.25rem .8rem 1rem;
+  border-bottom: 1px solid var(--rule);
+  font-size: 1rem;
 }
-.year__summary:hover { background: color-mix(in srgb, var(--year-color) 5%, var(--surface)); }
 
 .year__numeral {
-  font-size: 2.75rem;
+  font-size: 2rem;
   font-weight: 700;
   line-height: 1;
   color: var(--year-color);
-  min-width: 2.2rem;
+  min-width: 1.8rem;
   text-align: center;
-  font-variant-numeric: tabular-nums;
 }
 
-.year__label { font-size: 1.2rem; font-weight: 700; }
-.year__count { margin-left: auto; color: var(--muted); font-size: .9rem; white-space: nowrap; }
-
-.year__courses {
-  border-top: 1px solid var(--rule);
-}
+.year__label { font-size: 1.15rem; font-weight: 700; }
+.year__count { margin-left: auto; color: var(--muted); font-size: .9rem; font-weight: 400; white-space: nowrap; }
 
 /* ---------- Curso ---------- */
 
@@ -334,7 +412,11 @@ summary::-webkit-details-marker { display: none; }
   .brand__title { font-size: 1.15rem; }
   .page { padding: 1rem .75rem 3rem; }
 
-  .year__numeral { font-size: 2.1rem; min-width: 1.6rem; }
+  .picker__grid { grid-template-columns: repeat(2, 1fr); }
+  .year-card--all { grid-column: 1 / -1; }
+  .year-card { padding: .75rem 2.2rem .75rem .8rem; column-gap: .6rem; }
+  .year-card__numeral { font-size: 2rem; }
+  .year__numeral { font-size: 1.7rem; min-width: 1.4rem; }
   .year__label { font-size: 1.05rem; }
 
   .course__summary {
@@ -351,7 +433,7 @@ summary::-webkit-details-marker { display: none; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .chevron { transition: none; }
+  .chevron, .year-card { transition: none; }
 }
 
 @media print {
