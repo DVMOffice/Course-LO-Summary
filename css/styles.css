@@ -102,6 +102,12 @@ mark {
   line-height: 1.2;
 }
 
+.brand__home {
+  color: inherit;
+  text-decoration: none;
+}
+.brand__home:hover { text-decoration: underline; text-underline-offset: .2em; }
+
 .brand__subtitle {
   margin: .15rem 0 0;
   color: var(--muted);
