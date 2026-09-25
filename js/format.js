@@ -61,7 +61,7 @@
         const marker = match[1];
         const text = line.slice(match[0].length);
         const ordered = NUMERIC.test(marker);
-        if (!last() || last().type !== "list" || last().ordered !== ordered) {
+        if (!last() || last().type !== "list") {
           blocks.push({ type: "list", ordered, items: [] });
         }
         last().items.push({ marker: ordered ? marker : "", text });
@@ -108,15 +108,13 @@
         if (b.type === "h") return `<h4 class="outcomes__heading">${highlight(b.text, terms)}</h4>`;
         if (b.type === "p")
           return `<p class="outcomes__para${b.lead ? " outcomes__para--lead" : ""}">${highlight(b.text, terms)}</p>`;
-        const tag = b.ordered ? "ol" : "ul";
+        // Todas las listas se muestran con viñetas, sin importar si en el Excel
+        // tienen números (1., 1), (1)) o viñetas (•, -). Solo cambia cómo se ve;
+        // el texto de cada outcome no se modifica.
         const items = b.items
-          .map(
-            (it) =>
-              `<li>${it.marker ? `<span class="outcomes__num">${escapeHtml(it.marker)}</span>` : ""}` +
-              `<span class="outcomes__text">${highlight(it.text, terms)}</span></li>`
-          )
+          .map((it) => `<li><span class="outcomes__text">${highlight(it.text, terms)}</span></li>`)
           .join("");
-        return `<${tag} class="outcomes__list${b.ordered ? " outcomes__list--ordered" : ""}">${items}</${tag}>`;
+        return `<ul class="outcomes__list">${items}</ul>`;
       })
       .join("");
   }
