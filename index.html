@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>DVM Course Learning Outcomes 2026–27</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#catalog">Skip to courses</a>
+
+  <header class="topbar">
+    <div class="topbar__inner">
+      <div class="brand">
+        <h1 class="brand__title" id="site-title"></h1>
+        <p class="brand__subtitle" id="site-subtitle"></p>
+      </div>
+
+      <div class="search" role="search">
+        <label class="visually-hidden" for="search-input">Search courses and outcomes</label>
+        <svg class="search__icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>
+        <input id="search-input" class="search__input" type="search" autocomplete="off" spellcheck="false">
+        <button id="search-clear" class="search__clear" type="button" hidden>Clear</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="page" id="catalog">
+    <div class="toolbar">
+      <p id="search-status" class="toolbar__status" aria-live="polite"></p>
+      <div class="toolbar__actions">
+        <button id="expand-all" class="text-button" type="button">Expand all</button>
+        <button id="collapse-all" class="text-button" type="button">Collapse all</button>
+      </div>
+    </div>
+
+    <div id="years"></div>
+  </main>
+
+  <!-- Librería para leer Excel (SheetJS) -->
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+
+  <!-- Orden de carga: configuración → datos → utilidades → vistas → búsqueda → arranque -->
+  <script src="js/config.js"></script>
+  <script src="js/data.js"></script>
+  <script src="js/format.js"></script>
+  <script src="js/render.js"></script>
+  <script src="js/search.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
