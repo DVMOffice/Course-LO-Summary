@@ -39,14 +39,16 @@ window.AppStarted = true; // lo usa la revisión de index.html
 
   // 2. Estado: años elegidos (se guarda en la URL: ?years=1,2)
   const params = new URL(window.location).searchParams;
-  let selected;
-  if (params.has("years")) {
-    selected = new Set(params.get("years").split(",").filter((y) => allYears.includes(y)));
-  } else if (cfg.initialYears === "all") {
-    selected = new Set(allYears);
-  } else {
-    selected = new Set((cfg.initialYears || []).map(String));
+
+  // Años elegidos al inicio (según js/config.js → initialYears)
+  function initialSelection() {
+    if (cfg.initialYears === "all") return new Set(allYears);
+    return new Set((cfg.initialYears || []).map(String));
   }
+
+  let selected = params.has("years")
+    ? new Set(params.get("years").split(",").filter((y) => allYears.includes(y)))
+    : initialSelection();
 
   function updateUrl(q) {
     const url = new URL(window.location);
@@ -161,6 +163,17 @@ window.AppStarted = true; // lo usa la revisión de index.html
   });
 
   window.addEventListener("hashchange", openFromHash);
+
+  // Clic en el título: vuelve al inicio (borra búsqueda, restablece años, cierra cursos)
+  el.title.addEventListener("click", (e) => {
+    e.preventDefault();
+    clearTimeout(timer);
+    el.input.value = "";
+    selected = initialSelection();
+    history.replaceState(null, "", window.location.pathname);
+    run(); // vuelve a dibujar con todos los cursos cerrados
+    window.scrollTo({ top: 0 });
+  });
 
   // Primer dibujo
   el.input.value = params.get("q") || "";
