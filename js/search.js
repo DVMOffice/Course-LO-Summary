@@ -5,7 +5,7 @@
  * No distingue mayúsculas/minúsculas ni acentos.
  */
 (function () {
-  const { courseId } = window.Render;
+  const courseId = (c) => window.Render.courseId(c);
 
   function normalize(str) {
     return String(str || "")
